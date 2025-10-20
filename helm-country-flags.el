@@ -135,6 +135,13 @@
   "Convert country code (e.g. US, FR) to emoji flag."
   (let* ((char1 (aref code 0))
          (char2 (aref code 1))
+         ;; IIUC:
+         ;; 127462 == Unicode A (Eval (string 127462)=> "🇦")
+         ;;     65 == Ascii A   (Eval (string 65) => "A")
+         ;; Unicode Index == (- 127462 65) => 127397
+         ;; So that (string (+ 127397 ?F)) => "🇫"
+         ;; And (string (+ 127397 ?R)) => "🇷"
+         ;; Concating e.g. (concat "🇫" "🇷") => "🇫🇷"
          (flag1 (+ char1 127397))
          (flag2 (+ char2 127397)))
     (concat (string flag1) (string flag2))))
